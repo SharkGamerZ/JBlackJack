@@ -5,12 +5,12 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 
 public class MenuView extends JPanel implements BlackJackPanelView {
+    private JLabel titleLabel;
     private JButton newGameButton;
     private JButton optionsButton;
     private JButton exitButton;
 
     public MenuView() {
-        setLayout(new BorderLayout());
         initialize();
     }
 
@@ -21,33 +21,55 @@ public class MenuView extends JPanel implements BlackJackPanelView {
 
     @Override
     public void initialize() {
-        // Create a panel for centered buttons with some spacing
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new GridLayout(3, 1, 10, 20));
-        buttonPanel.setBorder(BorderFactory.createEmptyBorder(100, 100, 100, 100));
+        titleLabel = new JLabel();
+        optionsButton = new JButton();
+        newGameButton = new JButton();
+        exitButton = new JButton();
 
-        // Create title
-        JLabel titleLabel = new JLabel("Blackjack Game", JLabel.CENTER);
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 36));
 
-        // Create buttons
-        newGameButton = new JButton("New Game");
-        newGameButton.setFont(new Font("Arial", Font.PLAIN, 18));
+        //---- optionsButton ----
+        optionsButton.setText("Opzioni");
 
-        optionsButton = new JButton("Options");
-        optionsButton.setFont(new Font("Arial", Font.PLAIN, 18));
+        //---- newGameButton ----
+        newGameButton.setText("Nuova Partita");
 
-        exitButton = new JButton("Exit");
-        exitButton.setFont(new Font("Arial", Font.PLAIN, 18));
+        //---- exitButton ----
+        exitButton.setText("Esci");
 
-        // Add components to panels
-        buttonPanel.add(titleLabel);
-        buttonPanel.add(newGameButton);
-        buttonPanel.add(optionsButton);
-        buttonPanel.add(exitButton);
+        //---- Titolo ----
+        titleLabel.setText("JBlackJack");
+        titleLabel.setFont(new Font("Source Code Pro Black", Font.PLAIN, 48));
+        titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-        // Add button panel to the center of the main panel
-        add(buttonPanel, BorderLayout.CENTER);
+        GroupLayout layout = new GroupLayout(this);
+        setLayout(layout);
+        layout.setHorizontalGroup(
+                layout.createParallelGroup()
+                        .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addContainerGap(320, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup()
+                                        .addComponent(newGameButton, GroupLayout.PREFERRED_SIZE, 160, GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(optionsButton, GroupLayout.PREFERRED_SIZE, 160, GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(exitButton, GroupLayout.PREFERRED_SIZE, 160, GroupLayout.PREFERRED_SIZE))
+                                .addGap(320, 320, 320))
+                        .addGroup(layout.createSequentialGroup()
+                                .addGap(220, 220, 220)
+                                .addComponent(titleLabel, GroupLayout.PREFERRED_SIZE, 360, GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(220, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+                layout.createParallelGroup()
+                        .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGap(77, 77, 77)
+                                .addComponent(titleLabel, GroupLayout.PREFERRED_SIZE, 120, GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
+                                .addComponent(newGameButton, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)
+                                .addGap(40, 40, 40)
+                                .addComponent(optionsButton, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)
+                                .addGap(40, 40, 40)
+                                .addComponent(exitButton, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)
+                                .addGap(90, 90, 90))
+        );
     }
 
     @Override

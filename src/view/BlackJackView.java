@@ -19,6 +19,7 @@ public class BlackJackView extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 600);
         setLocationRelativeTo(null);
+        setResizable(false);
 
         // Initialize components
         cardLayout = new CardLayout();

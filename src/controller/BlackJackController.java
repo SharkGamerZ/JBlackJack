@@ -7,6 +7,8 @@ import model.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 public class BlackJackController {
     public static final String MENU_VIEW = "MENU";
@@ -19,7 +21,6 @@ public class BlackJackController {
 
     public BlackJackController(BlackJackModel model) {
         this.model = model;
-        //
 
         // Initialize the view
         initializeView();
@@ -121,7 +122,16 @@ public class BlackJackController {
         optionsView.setMuteButtonListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                System.out.println("Mutato");
+                optionsView.toggleMute();
+            }
+        });
+
+        optionsView.setVolumeSliderListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent changeEvent) {
+                int volumeLevel = optionsView.getVolumeValue();
+                optionsView.setVolumeLevel(volumeLevel);
+
             }
         });
 
