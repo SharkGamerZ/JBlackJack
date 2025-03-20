@@ -17,9 +17,8 @@ public class GameEvent {
     /**
      * Constructor for events with card data
      */
-    public GameEvent(String type, Card card) {
+    public GameEvent(String type, Player player) {
         this.type = type;
-        this.card = card;
     }
 
     /**

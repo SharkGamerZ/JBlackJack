@@ -17,7 +17,7 @@ public class BlackJackView extends JFrame {
     public BlackJackView(String title) {
         super(title);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(800, 600);
+        setSize(1280, 960);
         setLocationRelativeTo(null);
         setResizable(false);
 
@@ -49,6 +49,9 @@ public class BlackJackView extends JFrame {
     public void showView(String viewName) {
         if (views.containsKey(viewName)) {
             cardLayout.show(mainPanel, viewName);
+            views.get(viewName).revalidate();
+            views.get(viewName).repaint();
+            views.get(viewName).updateUI();
         } else {
             System.err.println("View not found: " + viewName);
         }

@@ -36,7 +36,7 @@ public class OptionsView extends JPanel implements BlackJackPanelView {
             unmuteIcon = new ImageIcon(getClass().getClassLoader().getResource("images/unmute.png"));
         } catch (Exception e) {
             e.printStackTrace();
-            System.err.println("Error creatin the Unmute Icon");
+            System.err.println("Error creating the Unmute Icon");
         }
         try {
             muteIcon = new ImageIcon(getClass().getClassLoader().getResource("images/mute.png"));

@@ -6,7 +6,6 @@ import model.*;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -16,10 +15,10 @@ public class BlackJackController {
     public static final String GAME_VIEW = "GAME";
     public static final String RESULT_VIEW = "RESULT";
 
-    private BlackJackModel model;
+    private Game model;
     private BlackJackView view;
 
-    public BlackJackController(BlackJackModel model) {
+    public BlackJackController(Game model) {
         this.model = model;
 
         // Initialize the view
@@ -82,6 +81,54 @@ public class BlackJackController {
         });
 
         // Game view listeners
+        gameView.setSub10ButtonListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                int newBetValue = gameView.getBetValue() - 10;
+                gameView.setBetValue(Math.max(newBetValue, 0));
+            }
+        });
+
+        gameView.setSub5ButtonListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                int newBetValue = gameView.getBetValue() - 5;
+                gameView.setBetValue(Math.max(newBetValue, 0));
+            }
+        });
+
+        gameView.setSub1ButtonListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                int newBetValue = gameView.getBetValue() - 1;
+                gameView.setBetValue(Math.max(newBetValue, 0));
+            }
+        });
+
+        gameView.setAdd5ButtonListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                int newBetValue = gameView.getBetValue() + 5;
+                gameView.setBetValue(newBetValue);
+            }
+        });
+
+        gameView.setAdd10ButtonListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                int newBetValue = gameView.getBetValue() + 10;
+                gameView.setBetValue(newBetValue);
+            }
+        });
+
+        gameView.setAdd25ButtonListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                int newBetValue = gameView.getBetValue() + 25;
+                gameView.setBetValue(newBetValue);
+            }
+        });
+
         gameView.setHitButtonListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -96,10 +143,23 @@ public class BlackJackController {
             }
         });
 
+        gameView.setStartGameButtonListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                dealCards();
+            }
+        });
         gameView.setMenuButtonListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 returnToMenu();
+            }
+        });
+
+        gameView.setClearButtonListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                clearGame();
             }
         });
 
@@ -155,16 +215,28 @@ public class BlackJackController {
      */
     private void startNewGame() {
         // Reset the model
-        model.newGame();
+        model.startNewGame(2);
 
         // Update game view
         GameView gameView = (GameView) view.getView(GAME_VIEW);
 
-        // Show initial cards
-        displayInitialCards(gameView);
-
         // Switch to game view
         switchView(GAME_VIEW);
+        gameView.setButtonsPanel(1);
+
+    }
+
+
+    private void dealCards() {
+        GameView gameView = (GameView) view.getView(GAME_VIEW);
+
+        // Get Bet
+//        betValue = gameView.placeBet();
+
+        gameView.setButtonsPanel(2);
+
+        // Show initial cards
+        displayInitialCards(gameView);
     }
 
     /**
@@ -175,7 +247,7 @@ public class BlackJackController {
         // In a real implementation, you'd clear and re-add card components
 
         // Add dealer's cards
-        gameView.addDealerCard("Face Down");
+        gameView.addDealerCard("Face_Down");
         gameView.addDealerCard(model.getDealerVisibleCard().toString());
         gameView.updateDealerScore(model.getDealerVisibleScore());
 
@@ -184,6 +256,15 @@ public class BlackJackController {
             gameView.addPlayerCard(card.toString());
         }
         gameView.updatePlayerScore(model.getPlayerScore());
+
+        // Add opponents' cards
+        for (int i = 0; i < model.getNumOpponents(); i++) {
+            for (Card card: model.getAIPlayerCards(i)) {
+                gameView.addAICard(i, card.toString());
+            }
+            gameView.updateAIScore(i, model.getAIPlayerScore(i));
+
+        }
     }
 
     /**
@@ -199,8 +280,10 @@ public class BlackJackController {
         gameView.addPlayerCard(newCard.toString());
         gameView.updatePlayerScore(model.getPlayerScore());
 
+
         // Check if player busts
         if (model.isPlayerBusted()) {
+            repaintCards();
             endGame("Player Busted! Dealer Wins!");
         }
     }
@@ -209,19 +292,9 @@ public class BlackJackController {
      * Player stands
      */
     private void playerStand() {
-        model.dealerPlay();
+        model.playerStand();
 
-        GameView gameView = (GameView) view.getView(GAME_VIEW);
-
-        // Update dealer cards and score
-        // In a real implementation, you'd clear and re-add all dealer cards
-        for (Card card : model.getDealerCards()) {
-            // Skip the first card which is already displayed
-            if (card != model.getDealerCards().get(0)) {
-                gameView.addDealerCard(card.toString());
-            }
-        }
-        gameView.updateDealerScore(model.getDealerScore());
+        repaintCards();
 
         // Determine the winner
         String result;
@@ -238,13 +311,68 @@ public class BlackJackController {
         endGame(result);
     }
 
+    private void repaintCards() {
+        GameView gameView = (GameView) view.getView(GAME_VIEW);
+        // Player
+        gameView.clearPlayerCards();
+        for (Card card: model.getPlayerCards()) {
+            gameView.addPlayerCard(card.toString());
+        }
+        gameView.updatePlayerScore(model.getPlayerScore());
+
+        // Dealer
+        gameView.clearDealerCards();
+        for (Card card : model.getDealerCards()) {
+            gameView.addDealerCard(card.toString());
+        }
+        gameView.updateDealerScore(model.getDealerScore());
+
+        // AI
+        for (int i = 0; i < model.getNumOpponents(); i++) {
+            gameView.clearAICards(i);
+            for (Card card: model.getAIPlayerCards(i)) {
+                gameView.addAICard(i, card.toString());
+            }
+            gameView.updateAIScore(i, model.getAIPlayerScore(i));
+        }
+    }
+
     /**
      * End the game and show result
      */
     private void endGame(String result) {
-        ResultView resultView = (ResultView) view.getView(RESULT_VIEW);
-        resultView.setResult(result);
-        switchView(RESULT_VIEW);
+//        model.getBettingResult(betValue, result);
+
+//        ResultView resultView = (ResultView) view.getView(RESULT_VIEW);
+//        resultView.setResult(result);
+//        switchView(RESULT_VIEW);
+
+        System.out.println(result);
+
+        GameView gameView = (GameView) view.getView(GAME_VIEW);
+
+        gameView.setPlayerResult(model.getPlayerResult());
+
+        for (int i = 0; i < model.getNumOpponents(); i++) {
+            gameView.setAIResult(i, model.getAIResult(i));
+        }
+        gameView.setButtonsPanel(3);
+
+    }
+
+    private void clearGame() {
+        GameView gameView = (GameView) view.getView(GAME_VIEW);
+
+        // Clear cards
+        gameView.clearDealerCards();
+        gameView.clearPlayerCards();
+        for (int i = 0; i < model.getNumOpponents(); i++) {
+            gameView.clearAICards(i);
+        }
+
+        gameView.setButtonsPanel(1);
+
+        startNewGame();
     }
 
     /**

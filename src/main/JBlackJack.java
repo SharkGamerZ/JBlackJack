@@ -5,12 +5,12 @@
 package main;
 
 import controller.BlackJackController;
-import model.BlackJackModel;
+import model.Game;
 
 public class JBlackJack {
     public static void main(String[] args) {
         // Create model
-        BlackJackModel model = new BlackJackModel();
+        Game model = new Game();
 
         // Create controller with model
         BlackJackController controller = new BlackJackController(model);
