@@ -18,7 +18,6 @@ public class Game extends Observable {
     private Player humanPlayer;
     private ArrayList<Player> aiPlayers;
     private GameState state;
-    private int currentPlayerIndex;
 
     /**
      * Constructor method
@@ -33,7 +32,7 @@ public class Game extends Observable {
     }
 
     public void setPlayer(Player newPlayer) {
-       humanPlayer = newPlayer;
+        humanPlayer = newPlayer;
     }
 
     public Player getPlayer() {
@@ -42,13 +41,14 @@ public class Game extends Observable {
 
     /**
      * Starts a new Game
+     * 
      * @param numAiPlayers Number of AI opponents
      */
     public void startNewGame(int numAiPlayers) {
         // Create AI players
         aiPlayers = new ArrayList<Player>(numAiPlayers);
         for (int i = 0; i < numAiPlayers; i++) {
-            Player ai = new Player("AI Player " + (i+1));
+            Player ai = new Player("AI Player " + (i + 1));
             aiPlayers.add(ai);
         }
 
@@ -86,10 +86,6 @@ public class Game extends Observable {
             ai.getHand().addCard(deck.drawCard());
         }
 
-        // Start with human player
-        currentPlayerIndex = 0;
-//        state = GameState.PLAYER_TURN;
-
         // Notify observers
         setChanged();
         notifyObservers(new GameEvent("NEW_GAME"));
@@ -101,7 +97,6 @@ public class Game extends Observable {
     public void stopBets() {
         state = GameState.PLAYER_TURN;
     }
-
 
     // ---------------- Player ----------------
 
@@ -132,6 +127,7 @@ public class Game extends Observable {
 
     /**
      * Gets the human Player cards from his hand.
+     * 
      * @return ArrayList of Cards
      */
     public ArrayList<Card> getPlayerCards() {
@@ -140,6 +136,7 @@ public class Game extends Observable {
 
     /**
      * Gets the current score of the human player.
+     * 
      * @return The player current score.
      */
     public int getPlayerScore() {
@@ -148,6 +145,7 @@ public class Game extends Observable {
 
     /**
      * Gets if the player busted or no.
+     * 
      * @return True if the player busted, false otherwise.
      */
     public boolean isPlayerBusted() {
@@ -156,6 +154,7 @@ public class Game extends Observable {
 
     /**
      * Gets the human player current balance.
+     * 
      * @return Player's balance/
      */
     public int getPlayerBalance() {
@@ -164,13 +163,18 @@ public class Game extends Observable {
 
     /**
      * Gets the human player current result.
+     * 
      * @return A String representing it's score
      */
     public String getPlayerResult() {
-        if (humanPlayer.getScore() > 21) return "BUSTED";
-        if (isDealerBusted()) return "WIN";
-        if (humanPlayer.getScore() > dealer.getScore()) return "WIN";
-        if (humanPlayer.getScore() == dealer.getScore()) return "TIE";
+        if (humanPlayer.getScore() > 21)
+            return "BUSTED";
+        if (isDealerBusted())
+            return "WIN";
+        if (humanPlayer.getScore() > dealer.getScore())
+            return "WIN";
+        if (humanPlayer.getScore() == dealer.getScore())
+            return "TIE";
         return "LOST";
     }
 
@@ -196,6 +200,7 @@ public class Game extends Observable {
 
     /**
      * Returns if an opponent should hit
+     * 
      * @param ai The number of the opponent
      * @return If it should hit (true) or stand (false)
      */
@@ -206,6 +211,7 @@ public class Game extends Observable {
 
     /**
      * Calculate the bet for the AI opponent.
+     * 
      * @param ai The number of the opponent.
      * @return A random value between 5 and 100.
      */
@@ -220,6 +226,7 @@ public class Game extends Observable {
 
     /**
      * Gets the AI opponent current bet.
+     * 
      * @param AI The number of the opponent.
      * @return The current bet of the opponent with number AI.
      */
@@ -229,6 +236,7 @@ public class Game extends Observable {
 
     /**
      * Gets the AI opponent current balance.
+     * 
      * @param AI The number of the opponent.
      * @return The current balance of the opponent with number AI.
      */
@@ -238,6 +246,7 @@ public class Game extends Observable {
 
     /**
      * Gets the AI Opponent cards from his hand.
+     * 
      * @param AI The number of the opponent.
      * @return ArrayList of the cards.
      */
@@ -247,6 +256,7 @@ public class Game extends Observable {
 
     /**
      * Gets the AI Opponent current score.
+     * 
      * @param AI The number of the opponent.
      * @return Current score of opponent with number AI
      */
@@ -256,14 +266,19 @@ public class Game extends Observable {
 
     /**
      * Gets the AI opponent current result.
+     * 
      * @param AI The number of the opponent.
      * @return A String representing it's score
      */
     public String getAIResult(int AI) {
-        if (aiPlayers.get(AI).getScore() > 21) return "BUSTED";
-        if (isDealerBusted()) return "WIN";
-        if (aiPlayers.get(AI).getScore() > dealer.getScore()) return "WIN";
-        if (aiPlayers.get(AI).getScore() == dealer.getScore()) return "TIE";
+        if (aiPlayers.get(AI).getScore() > 21)
+            return "BUSTED";
+        if (isDealerBusted())
+            return "WIN";
+        if (aiPlayers.get(AI).getScore() > dealer.getScore())
+            return "WIN";
+        if (aiPlayers.get(AI).getScore() == dealer.getScore())
+            return "TIE";
         return "LOST";
     }
 
@@ -289,6 +304,7 @@ public class Game extends Observable {
 
     /**
      * Gets the only currently visible card from the Dealer.
+     * 
      * @return Current visible card.
      */
     public Card getDealerVisibleCard() {
@@ -297,6 +313,7 @@ public class Game extends Observable {
 
     /**
      * Gets the currently visible score from the Dealer.
+     * 
      * @return Current visible score.
      */
     public int getDealerVisibleScore() {
@@ -305,6 +322,7 @@ public class Game extends Observable {
 
     /**
      * Gets all the cards of the dealer.
+     * 
      * @return ArrayList of cards of the dealer.
      */
     public ArrayList<Card> getDealerCards() {
@@ -313,6 +331,7 @@ public class Game extends Observable {
 
     /**
      * Gets the dealer total score.
+     * 
      * @return The dealer's score
      */
     public int getDealerScore() {
@@ -321,6 +340,7 @@ public class Game extends Observable {
 
     /**
      * Gets if the dealer is busted.
+     * 
      * @return True if the dealer busted, false otherwise.
      */
     public boolean isDealerBusted() {
@@ -355,6 +375,7 @@ public class Game extends Observable {
 
     /**
      * Updates the stats after the game/
+     * 
      * @param player Player to which increment stats.
      */
     private void updatePlayerStats(Player player) {
@@ -379,6 +400,7 @@ public class Game extends Observable {
 
     /**
      * Calculate the payout of the current Game
+     * 
      * @param player Player to which calculate the payout
      * @return The payout (positive or negative)
      */
@@ -402,7 +424,7 @@ public class Game extends Observable {
         boolean dealerBlackjack = dealerScore == 21 && dealer.getHand().getCards().size() == 2;
 
         if (playerBlackjack && !dealerBlackjack) {
-            return (int)(bet * 2.5); // 3:2 payout for blackjack
+            return (int) (bet * 2.5); // 3:2 payout for blackjack
         } else if (playerBlackjack && dealerBlackjack) {
             return bet; // Push on double blackjack
         } else if (!playerBlackjack && dealerBlackjack) {
@@ -422,6 +444,7 @@ public class Game extends Observable {
 
     /**
      * Gets the number of opponents
+     * 
      * @return The number of AI opponents
      */
     public int getNumOpponents() {
@@ -430,6 +453,7 @@ public class Game extends Observable {
 
     /**
      * Gets the bet of the human player
+     * 
      * @return The human player's bet
      */
     public int getHumanPlayerBet() {
@@ -438,16 +462,18 @@ public class Game extends Observable {
 
     /**
      * Sets the bet of the human player
+     * 
      * @param bet New bet to set
      */
     public void setHumanPlayerBet(int bet) {
         humanPlayer.setBalance(humanPlayer.getBalance() + humanPlayer.getBet());
         humanPlayer.setBet(bet);
-        humanPlayer.setBalance(humanPlayer.getBalance()-bet);
+        humanPlayer.setBalance(humanPlayer.getBalance() - bet);
     }
 
     /**
      * Gets the state of the game
+     * 
      * @return Avalue of the GameState enum
      */
     public GameState getState() {

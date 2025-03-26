@@ -13,6 +13,8 @@ import java.awt.image.BufferedImage;
  * Represents the profile view
  */
 public class ProfileView extends JPanel implements BlackJackPanelView {
+    private static ProfileView instance = null;
+
     private JButton muteButton;
     private Icon muteIcon;
     private Icon unmuteIcon;
@@ -29,29 +31,38 @@ public class ProfileView extends JPanel implements BlackJackPanelView {
     private JLabel gamesLostLabel;
     private JLabel propicLabel;
 
-
     /**
      * Constructor for the profile view
      */
-    public ProfileView(Player player) {
+    private ProfileView() {
         muteButton = new JButton();
         homeButton = new JButton();
-        profileLabel = new JLabel(player.getNickname());
+        profileLabel = new JLabel();
         volumeSlider = new JSlider();
         volumeLevel = new JLabel();
         separator = new JSeparator();
         gamesPlayedLabel = new JLabel();
-        setGamesPlayedLabel(player.getGamesPlayed());
         gamesWonLabel = new JLabel();
-        setGamesWonLabel(player.getGamesWon());
         gamesLostLabel = new JLabel();
-        setGamesLostLabel(player.getGamesLost());
         propicLabel = new JLabel();
         initialize();
     }
 
     /**
+     * Get the instance of the profile view
+     * 
+     * @return the instance of the profile view
+     */
+    public static ProfileView getInstance() {
+        if (instance == null) {
+            instance = new ProfileView();
+        }
+        return instance;
+    }
+
+    /**
      * Get the view name
+     * 
      * @return the view name
      */
     @Override
@@ -60,11 +71,23 @@ public class ProfileView extends JPanel implements BlackJackPanelView {
     }
 
     /**
+     * Set the player
+     * 
+     * @param player the player
+     */
+    public void setPlayer(Player player) {
+        profileLabel.setText(player.getNickname());
+        setGamesPlayedLabel(player.getGamesPlayed());
+        setGamesWonLabel(player.getGamesWon());
+        setGamesLostLabel(player.getGamesLost());
+    }
+
+    /**
      * Initialize the profile view
      */
     @Override
     public void initialize() {
-        //---- muteButton ----
+        // ---- muteButton ----
         muteButton = new JButton();
         try {
             unmuteIcon = new ImageIcon(getClass().getClassLoader().getResource("images/unmute.png"));
@@ -79,13 +102,13 @@ public class ProfileView extends JPanel implements BlackJackPanelView {
             System.err.println("Error creating the Mute Icon");
         }
 
-        //---- muteButton ----
+        // ---- muteButton ----
         muteButton.setIcon(unmuteIcon);
 
-        //---- homeButton ----
+        // ---- homeButton ----
         homeButton.setText("Home");
 
-        //---- propicLabel ----
+        // ---- propicLabel ----
         BufferedImage img = null;
         try {
             img = ImageIO.read(getClass().getClassLoader().getResource("images/propics/matteo.jpg"));
@@ -99,26 +122,25 @@ public class ProfileView extends JPanel implements BlackJackPanelView {
         propicLabel.setPreferredSize(new Dimension(96, 96));
         propicLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-        //---- profileLabel ----
+        // ---- profileLabel ----
         profileLabel.setFont(new Font("Source Code Pro Black", Font.BOLD, 40));
         profileLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-        //---- volumeSlider ----
+        // ---- volumeSlider ----
         volumeSlider.setPaintLabels(true);
         volumeSlider.setPaintTicks(true);
 
-        //---- volumeLevel ----
+        // ---- volumeLevel ----
         volumeLevel.setText("100");
 
-        //---- partiteGiocate ----
+        // ---- partiteGiocate ----
         gamesPlayedLabel.setFont(new Font("Arial", Font.BOLD, 25));
 
-        //---- partiteVinte ----
+        // ---- partiteVinte ----
         gamesWonLabel.setFont(new Font("Arial", Font.BOLD, 25));
 
-        //---- partitePerse ----
+        // ---- partitePerse ----
         gamesLostLabel.setFont(new Font("Arial", Font.BOLD, 25));
-
 
         GroupLayout layout = new GroupLayout(this);
         this.setLayout(layout);
@@ -126,13 +148,15 @@ public class ProfileView extends JPanel implements BlackJackPanelView {
                 layout.createParallelGroup()
                         .addGroup(layout.createSequentialGroup()
                                 .addGap(61, 61, 61)
-                                .addComponent(propicLabel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                .addComponent(propicLabel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+                                        GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(profileLabel, GroupLayout.PREFERRED_SIZE, 201, GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 68, Short.MAX_VALUE)
                                 .addComponent(muteButton, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(volumeSlider, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                .addComponent(volumeSlider, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+                                        GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(volumeLevel)
                                 .addGap(51, 51, 51))
@@ -144,15 +168,18 @@ public class ProfileView extends JPanel implements BlackJackPanelView {
                                 .addGroup(layout.createParallelGroup()
                                         .addGroup(layout.createSequentialGroup()
                                                 .addGap(352, 352, 352)
-                                                .addComponent(separator, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                                                .addComponent(separator, GroupLayout.PREFERRED_SIZE,
+                                                        GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
                                         .addGroup(layout.createSequentialGroup()
                                                 .addGap(46, 46, 46)
                                                 .addGroup(layout.createParallelGroup()
-                                                        .addComponent(gamesPlayedLabel, GroupLayout.PREFERRED_SIZE, 400, GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(gamesLostLabel, GroupLayout.PREFERRED_SIZE, 400, GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(gamesWonLabel, GroupLayout.PREFERRED_SIZE, 400, GroupLayout.PREFERRED_SIZE))))
-                                .addContainerGap(448, Short.MAX_VALUE))
-        );
+                                                        .addComponent(gamesPlayedLabel, GroupLayout.PREFERRED_SIZE, 400,
+                                                                GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(gamesLostLabel, GroupLayout.PREFERRED_SIZE, 400,
+                                                                GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(gamesWonLabel, GroupLayout.PREFERRED_SIZE, 400,
+                                                                GroupLayout.PREFERRED_SIZE))))
+                                .addContainerGap(448, Short.MAX_VALUE)));
         layout.setVerticalGroup(
                 layout.createParallelGroup()
                         .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -160,33 +187,42 @@ public class ProfileView extends JPanel implements BlackJackPanelView {
                                         .addGroup(layout.createSequentialGroup()
                                                 .addGap(68, 68, 68)
                                                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                                        .addComponent(muteButton, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(volumeSlider, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(muteButton, GroupLayout.PREFERRED_SIZE, 60,
+                                                                GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(volumeSlider, GroupLayout.PREFERRED_SIZE,
+                                                                GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                                                         .addComponent(volumeLevel)))
                                         .addGroup(layout.createSequentialGroup()
                                                 .addGap(55, 55, 55)
                                                 .addGroup(layout.createParallelGroup()
-                                                        .addComponent(propicLabel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(profileLabel, GroupLayout.PREFERRED_SIZE, 120, GroupLayout.PREFERRED_SIZE))))
+                                                        .addComponent(propicLabel, GroupLayout.PREFERRED_SIZE,
+                                                                GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(profileLabel, GroupLayout.PREFERRED_SIZE, 120,
+                                                                GroupLayout.PREFERRED_SIZE))))
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(separator, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                .addComponent(separator, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+                                        GroupLayout.PREFERRED_SIZE)
                                 .addGap(77, 77, 77)
-                                .addComponent(gamesPlayedLabel, GroupLayout.PREFERRED_SIZE, 72, GroupLayout.PREFERRED_SIZE)
+                                .addComponent(gamesPlayedLabel, GroupLayout.PREFERRED_SIZE, 72,
+                                        GroupLayout.PREFERRED_SIZE)
                                 .addGroup(layout.createParallelGroup()
                                         .addGroup(layout.createSequentialGroup()
-                                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 194, Short.MAX_VALUE)
-                                                .addComponent(homeButton, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 194,
+                                                        Short.MAX_VALUE)
+                                                .addComponent(homeButton, GroupLayout.PREFERRED_SIZE, 60,
+                                                        GroupLayout.PREFERRED_SIZE)
                                                 .addGap(59, 59, 59))
                                         .addGroup(layout.createSequentialGroup()
-                                                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addComponent(gamesWonLabel, GroupLayout.PREFERRED_SIZE, 72, GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED,
+                                                        GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(gamesWonLabel, GroupLayout.PREFERRED_SIZE, 72,
+                                                        GroupLayout.PREFERRED_SIZE)
                                                 .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(gamesLostLabel, GroupLayout.PREFERRED_SIZE, 72, GroupLayout.PREFERRED_SIZE)
-                                                .addContainerGap(99, Short.MAX_VALUE))))
-        );
+                                                .addComponent(gamesLostLabel, GroupLayout.PREFERRED_SIZE, 72,
+                                                        GroupLayout.PREFERRED_SIZE)
+                                                .addContainerGap(99, Short.MAX_VALUE)))));
 
     }
-
 
     /**
      * Update the profile view
@@ -196,11 +232,11 @@ public class ProfileView extends JPanel implements BlackJackPanelView {
         // Nothing to update in menu view
     }
 
-
     // Event Listeners
 
     /**
      * Set the mute button listener
+     * 
      * @param listener the listener
      */
     public void setMuteButtonListener(ActionListener listener) {
@@ -209,6 +245,7 @@ public class ProfileView extends JPanel implements BlackJackPanelView {
 
     /**
      * Set the volume slider listener
+     * 
      * @param listener the listener
      */
     public void setVolumeSliderListener(ChangeListener listener) {
@@ -217,17 +254,17 @@ public class ProfileView extends JPanel implements BlackJackPanelView {
 
     /**
      * Set the home button listener
+     * 
      * @param listener the listener
      */
     public void setHomeButtonListener(ActionListener listener) {
         homeButton.addActionListener(listener);
     }
 
-
-
     // Getters
     /**
      * Get the volume level
+     * 
      * @return the volume level
      */
     public int getVolumeLevel() {
@@ -238,6 +275,7 @@ public class ProfileView extends JPanel implements BlackJackPanelView {
 
     /**
      * Set the volume level
+     * 
      * @param volume the volume level
      */
     public void setVolumeLevel(int volume) {
@@ -254,9 +292,9 @@ public class ProfileView extends JPanel implements BlackJackPanelView {
         muteButton.setIcon(isMuted ? muteIcon : unmuteIcon);
     }
 
-
     /**
      * Set the profile label
+     * 
      * @param username the username
      */
     public void setProfileLabel(String username) {
@@ -265,6 +303,7 @@ public class ProfileView extends JPanel implements BlackJackPanelView {
 
     /**
      * Set the games played label
+     * 
      * @param gamesPlayed the games played
      */
     public void setGamesPlayedLabel(int gamesPlayed) {
@@ -273,6 +312,7 @@ public class ProfileView extends JPanel implements BlackJackPanelView {
 
     /**
      * Set the games won label
+     * 
      * @param gamesWon the games won
      */
     public void setGamesWonLabel(int gamesWon) {
@@ -281,6 +321,7 @@ public class ProfileView extends JPanel implements BlackJackPanelView {
 
     /**
      * Set the games lost label
+     * 
      * @param gamesLost the games lost
      */
     public void setGamesLostLabel(int gamesLost) {

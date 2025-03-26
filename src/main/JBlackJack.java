@@ -13,6 +13,7 @@ import model.Game;
 public class JBlackJack {
     /**
      * Main method to start the Game
+     * 
      * @param args
      */
     public static void main(String[] args) {
@@ -21,7 +22,5 @@ public class JBlackJack {
 
         // Create controller with model
         BlackJackController controller = new BlackJackController(model);
-
-        // The controller will handle initialization and display
     }
 }

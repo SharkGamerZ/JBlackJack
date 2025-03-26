@@ -25,6 +25,10 @@ public class BlackJackController {
     private Game model;
     private BlackJackView view;
 
+    MenuView menuView;
+    GameView gameView;
+    ProfileView profileView;
+
     private Player player;
 
     private int numAiPlayers = 3;
@@ -37,7 +41,6 @@ public class BlackJackController {
     public BlackJackController(Game model) {
         this.model = model;
 
-        // TODO caricare il player da file
         try (BufferedReader br = new BufferedReader(new FileReader("resources/data/profile.txt"))) {
 
             StringBuilder sb = new StringBuilder();
@@ -81,15 +84,14 @@ public class BlackJackController {
         view = new BlackJackView("Blackjack Game");
 
         // Create individual views
-        MenuView menuView = new MenuView();
-        GameView gameView = new GameView();
-        ResultView resultView = new ResultView();
-        ProfileView profileView = new ProfileView(player);
+        menuView = MenuView.getInstance();
+        gameView = GameView.getInstance();
+        profileView = ProfileView.getInstance();
+        profileView.setPlayer(player);
 
         // Add views to the main frame
         view.addView(MENU_VIEW, menuView);
         view.addView(GAME_VIEW, gameView);
-        view.addView(RESULT_VIEW, resultView);
         view.addView(PROFILE_VIEW, profileView);
 
         // Register game view as observer of the model
@@ -104,12 +106,6 @@ public class BlackJackController {
      * Register action listeners for the views
      */
     private void registerActionListeners() {
-        // Get views
-        MenuView menuView = (MenuView) view.getView(MENU_VIEW);
-        GameView gameView = (GameView) view.getView(GAME_VIEW);
-        ResultView resultView = (ResultView) view.getView(RESULT_VIEW);
-        ProfileView profileView = (ProfileView) view.getView(PROFILE_VIEW);
-
         // Menu view listeners
         menuView.setNewGameButtonListener(new ActionListener() {
             @Override
@@ -295,8 +291,6 @@ public class BlackJackController {
      * Set listeners for removing the bets
      */
     private void setSubChipsListeners() {
-        GameView gameView = (GameView) view.getView(GAME_VIEW);
-
         gameView.setSub5Listener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent mouseEvent) {
@@ -451,9 +445,6 @@ public class BlackJackController {
         // Reset the model
         model.startNewGame(numAiPlayers);
 
-        // Update game view
-        GameView gameView = (GameView) view.getView(GAME_VIEW);
-
         // Switch to game view
         switchView(GAME_VIEW);
         gameView.setButtonsPanel(1);
@@ -464,8 +455,6 @@ public class BlackJackController {
      * Deal the cards
      */
     private void dealCards() {
-        GameView gameView = (GameView) view.getView(GAME_VIEW);
-
         // Display the AI bets
         for (int i = 0; i < numAiPlayers; i++) {
             gameView.setAIBetValue(i, model.getAIBet(i));
@@ -488,9 +477,6 @@ public class BlackJackController {
      * @param gameView The gameView where to display the cards
      */
     private void displayInitialCards(GameView gameView) {
-        // Clear existing cards
-        // In a real implementation, you'd clear and re-add card components
-
         // Add dealer's cards
         gameView.addDealerCard("Face_Down");
         gameView.addDealerCard(model.getDealerVisibleCard().toString());
@@ -517,8 +503,6 @@ public class BlackJackController {
      */
     private void playerHit() {
         model.playerHit();
-
-        GameView gameView = (GameView) view.getView(GAME_VIEW);
 
         // Add the new card to the view
         Card newCard = model.getPlayerCards().get(model.getPlayerCards().size() - 1);
@@ -559,7 +543,6 @@ public class BlackJackController {
      * Repaint all the cards in the view
      */
     private void repaintCards() {
-        GameView gameView = (GameView) view.getView(GAME_VIEW);
         // Player
         gameView.clearPlayerCards();
         for (Card card : model.getPlayerCards()) {
@@ -588,9 +571,6 @@ public class BlackJackController {
      * End the game and show result
      */
     private void endGame(String result) {
-        GameView gameView = (GameView) view.getView(GAME_VIEW);
-        ProfileView profileView = (ProfileView) view.getView(PROFILE_VIEW);
-
         gameView.setPlayerResult(model.getPlayerResult());
         gameView.setBalanceValue(model.getPlayerBalance());
 
@@ -610,8 +590,6 @@ public class BlackJackController {
      * Clear the view to initiate a new Game
      */
     private void clearGame() {
-        GameView gameView = (GameView) view.getView(GAME_VIEW);
-
         // Clear cards
         gameView.clearDealerCards();
         gameView.clearPlayerCards();

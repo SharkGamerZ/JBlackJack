@@ -17,8 +17,10 @@ public class BlackJackView extends JFrame implements Observer {
     private Map<String, JPanel> views;
 
     private String currentView;
+
     /**
      * The constructor
+     * 
      * @param title Title of the new view
      */
     public BlackJackView(String title) {
@@ -67,16 +69,6 @@ public class BlackJackView extends JFrame implements Observer {
     }
 
     /**
-     * Gets a view by name
-     * 
-     * @param viewName The name of the view
-     * @return The JPanel associated with the name, or null if not found
-     */
-    public JPanel getView(String viewName) {
-        return views.get(viewName);
-    }
-
-    /**
      * Makes the frame visible and shows the initial view
      * 
      * @param initialView The name of the initial view to display
@@ -87,10 +79,10 @@ public class BlackJackView extends JFrame implements Observer {
         currentView = initialView;
     }
 
-
     /**
      * Updates the view based on the model
-     * @param o The observable object
+     * 
+     * @param o   The observable object
      * @param arg The argument passed
      */
     @Override

@@ -8,6 +8,8 @@ import java.awt.event.ActionListener;
  * Represents the menu view
  */
 public class MenuView extends JPanel implements BlackJackPanelView {
+    private static MenuView instance = null;
+
     private JLabel titleLabel;
     private JButton newGameButton;
     private JButton profileButton;
@@ -16,12 +18,20 @@ public class MenuView extends JPanel implements BlackJackPanelView {
     /**
      * Constructor for the menu view
      */
-    public MenuView() {
+    private MenuView() {
         initialize();
+    }
+
+    public static MenuView getInstance() {
+        if (instance == null) {
+            instance = new MenuView();
+        }
+        return instance;
     }
 
     /**
      * Get the view name
+     * 
      * @return the view name
      */
     @Override
@@ -39,17 +49,16 @@ public class MenuView extends JPanel implements BlackJackPanelView {
         newGameButton = new JButton();
         exitButton = new JButton();
 
-
-        //---- optionsButton ----
+        // ---- optionsButton ----
         profileButton.setText("Profilo");
 
-        //---- newGameButton ----
+        // ---- newGameButton ----
         newGameButton.setText("Nuova Partita");
 
-        //---- exitButton ----
+        // ---- exitButton ----
         exitButton.setText("Esci");
 
-        //---- Titolo ----
+        // ---- Titolo ----
         titleLabel.setText("JBlackJack");
         titleLabel.setFont(new Font("Source Code Pro Black", Font.PLAIN, 48));
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);

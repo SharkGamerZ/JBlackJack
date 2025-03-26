@@ -9,7 +9,9 @@ import java.util.*;
 /**
  * The main view for the BlackJack game.
  */
-public class GameView extends JPanel implements BlackJackPanelView{
+public class GameView extends JPanel implements BlackJackPanelView {
+    private static GameView instance = null;
+
     private JPanel dealerPanel;
     private JLabel dealerScoreLabel;
     private JPanel dealerCardsPanel;
@@ -18,7 +20,6 @@ public class GameView extends JPanel implements BlackJackPanelView{
     private ArrayList<Boolean> aiPlayersPlaying;
     private ArrayList<JPanel> addAIPlayerPanel;
     private ArrayList<JButton> addAIPlayerButton;
-
 
     private ArrayList<JPanel> aiPlayerPanel;
     private ArrayList<JButton> removeAIPlayerButton;
@@ -39,8 +40,8 @@ public class GameView extends JPanel implements BlackJackPanelView{
 
     private JPanel setBetPanel;
 
-    private HashMap<Integer,ArrayList<JLabel>> chipsHashmap;
-    private ArrayList<HashMap<Integer,ArrayList<JLabel>>> aiPlayersChipsHashmap;
+    private HashMap<Integer, ArrayList<JLabel>> chipsHashmap;
+    private ArrayList<HashMap<Integer, ArrayList<JLabel>>> aiPlayersChipsHashmap;
 
     private JButton add5Button;
     private JButton add10Button;
@@ -60,7 +61,7 @@ public class GameView extends JPanel implements BlackJackPanelView{
     /**
      * Constructor
      */
-    public GameView() {
+    private GameView() {
         aiPlayersPlaying = new ArrayList<Boolean>(3);
         for (int i = 0; i < 3; i++) {
             aiPlayersPlaying.add(false);
@@ -75,7 +76,7 @@ public class GameView extends JPanel implements BlackJackPanelView{
         aiPlayerCardsPanel = new ArrayList<JPanel>(3);
         aiPlayerSouthPanel = new ArrayList<JPanel>(3);
         aiPlayerBetValuePanel = new ArrayList<JPanel>(3);
-        aiPlayersChipsHashmap = new ArrayList<HashMap<Integer,ArrayList<JLabel>>>(3);
+        aiPlayersChipsHashmap = new ArrayList<HashMap<Integer, ArrayList<JLabel>>>(3);
         aiPlayerResultLabel = new ArrayList<JLabel>(3);
         aiPlayerBalanceLabel = new ArrayList<JLabel>(3);
 
@@ -85,7 +86,20 @@ public class GameView extends JPanel implements BlackJackPanelView{
     }
 
     /**
+     * Gets the instance of the view
+     * 
+     * @return The instance of the view
+     */
+    public static GameView getInstance() {
+        if (instance == null) {
+            instance = new GameView();
+        }
+        return instance;
+    }
+
+    /**
      * Paints the background of the panel
+     * 
      * @param g The graphics object
      */
     @Override
@@ -95,6 +109,7 @@ public class GameView extends JPanel implements BlackJackPanelView{
 
     /**
      * Gets the name of the view
+     * 
      * @return The name of the view
      */
     @Override
@@ -111,7 +126,6 @@ public class GameView extends JPanel implements BlackJackPanelView{
         dealerPanel = new JPanel();
         dealerPanel.setLayout(new BorderLayout());
         dealerPanel.setBorder(BorderFactory.createTitledBorder("Dealer"));
-
 
         // Create the score label and center it at the top
         dealerScoreLabel = new JLabel("", SwingConstants.CENTER);
@@ -145,7 +159,7 @@ public class GameView extends JPanel implements BlackJackPanelView{
         humanPlayerCardsPanel.setOpaque(false);
 
         humanPlayerSouthPanel = new JPanel();
-        humanPlayerSouthPanel.setLayout(new GridLayout(3,1));
+        humanPlayerSouthPanel.setLayout(new GridLayout(3, 1));
         humanPlayerSouthPanel.setOpaque(false);
 
         humanPlayerBetValuePanel = new JPanel();
@@ -175,7 +189,7 @@ public class GameView extends JPanel implements BlackJackPanelView{
         for (int i = 0; i < 3; i++) {
             aiPlayerPanel.add(i, new JPanel());
             aiPlayerPanel.get(i).setLayout(new BorderLayout());
-            aiPlayerPanel.get(i).setBorder(BorderFactory.createTitledBorder("AI " + (i+1)));
+            aiPlayerPanel.get(i).setBorder(BorderFactory.createTitledBorder("AI " + (i + 1)));
 
             removeAIPlayerButton.add(i, new JButton("Remove AI Player"));
 
@@ -185,12 +199,11 @@ public class GameView extends JPanel implements BlackJackPanelView{
             aiPlayerCardsPanel.add(i, new JPanel(new FlowLayout(FlowLayout.CENTER)));
             aiPlayerCardsPanel.get(i).setOpaque(false);
 
-
             aiPlayerSouthPanel.add(i, new JPanel());
-            aiPlayerSouthPanel.get(i).setLayout(new GridLayout(4,1));
+            aiPlayerSouthPanel.get(i).setLayout(new GridLayout(4, 1));
             aiPlayerSouthPanel.get(i).setOpaque(false);
 
-            aiPlayerBetValuePanel.add(i,new JPanel());
+            aiPlayerBetValuePanel.add(i, new JPanel());
             aiPlayerBetValuePanel.get(i).setLayout(new FlowLayout(FlowLayout.CENTER));
             aiPlayerBetValuePanel.get(i).setOpaque(false);
 
@@ -211,7 +224,6 @@ public class GameView extends JPanel implements BlackJackPanelView{
 
             aiPlayerPanel.get(i).setOpaque(false);
 
-
             if (aiPlayersPlaying.get(i) == false) {
                 addAIPlayerPanel.add(i, new JPanel());
                 addAIPlayerPanel.get(i).setLayout(new BorderLayout());
@@ -229,8 +241,6 @@ public class GameView extends JPanel implements BlackJackPanelView{
             playersPanel.add(aiPlayerPanel.get(i));
         }
 
-
-
         // Bet Panel
         ImageIcon chip5 = null;
         ImageIcon chip10 = null;
@@ -243,7 +253,6 @@ public class GameView extends JPanel implements BlackJackPanelView{
             e.printStackTrace();
             System.err.println("Error creating the chips Icons");
         }
-
 
         setBetPanel = new JPanel();
         setBetPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -270,10 +279,6 @@ public class GameView extends JPanel implements BlackJackPanelView{
         setBetPanel.add(add10Button);
         setBetPanel.add(add25Button);
         setBetPanel.setOpaque(false);
-
-
-
-
 
         // Buttons panel
         /**
@@ -305,7 +310,6 @@ public class GameView extends JPanel implements BlackJackPanelView{
         firstPanel.add(startGameButton);
         firstPanel.add(menuButton);
 
-
         // Second Panel
         JPanel secondPanel = new JPanel();
         secondPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -325,17 +329,13 @@ public class GameView extends JPanel implements BlackJackPanelView{
         clearButton = new MyButton("Clear");
 
         thirdPanel.add(clearButton);
-//        thirdPanel.add(menuButton);
-
-
+        // thirdPanel.add(menuButton);
 
         buttonPanel.add(firstPanel, "1");
         buttonPanel.add(secondPanel, "2");
         buttonPanel.add(thirdPanel, "3");
 
-
         buttonsCardLayout.show(buttonPanel, "1");
-
 
         // South Panel
         JPanel southPanel = new JPanel();
@@ -343,7 +343,6 @@ public class GameView extends JPanel implements BlackJackPanelView{
         southPanel.add(setBetPanel);
         southPanel.add(buttonPanel);
         southPanel.setOpaque(false);
-
 
         // Add panels to main panel
         add(dealerPanel, BorderLayout.NORTH);
@@ -353,13 +352,13 @@ public class GameView extends JPanel implements BlackJackPanelView{
 
     /**
      * Updates the chip labels
+     * 
      * @param bet The bet value
      */
     private void updateChipLabels(int bet) {
         HashMap<Integer, ArrayList<JLabel>> chipsLabels = getChipsLabels(bet);
         humanPlayerBetValuePanel.removeAll();
-        int[] fishValues = {100, 25, 10, 5};
-
+        int[] fishValues = { 100, 25, 10, 5 };
 
         for (int i = 0; i < fishValues.length; i++) {
             for (JLabel chipLabel : chipsLabels.get(fishValues[i])) {
@@ -371,22 +370,23 @@ public class GameView extends JPanel implements BlackJackPanelView{
         humanPlayerBetValuePanel.repaint();
     }
 
-
     /**
      * Gets the chip labels for the bet
+     * 
      * @param bet The bet value
      * @return The hashmap of chips
      */
     private HashMap<Integer, ArrayList<JLabel>> getChipsLabels(int bet) {
         chipsHashmap = new HashMap<Integer, ArrayList<JLabel>>();
-        int[] fishValues = {100, 25, 10, 5};
+        int[] fishValues = { 100, 25, 10, 5 };
         int remainingBet = bet;
 
         for (int i = 0; i < fishValues.length; i++) {
             int fishNumber = remainingBet / fishValues[i];
             ArrayList<JLabel> chipLabelList = new ArrayList<JLabel>();
             for (int j = 0; j < fishNumber; j++) {
-                JLabel fishLabel = new JLabel(new ImageIcon(getClass().getClassLoader().getResource("images/chips/chip-" + fishValues[i] + ".png")));
+                JLabel fishLabel = new JLabel(new ImageIcon(
+                        getClass().getClassLoader().getResource("images/chips/chip-" + fishValues[i] + ".png")));
                 chipLabelList.add(fishLabel);
             }
             chipsHashmap.put(fishValues[i], chipLabelList);
@@ -396,18 +396,18 @@ public class GameView extends JPanel implements BlackJackPanelView{
         return chipsHashmap;
     }
 
-
     /**
      * Updates the AI chip labels
-     * @param AI The AI number
+     * 
+     * @param AI  The AI number
      * @param bet The bet value
      */
     private void updateAIChipLabels(int AI, int bet) {
-        if (!aiPlayersPlaying.get(AI)) return;
+        if (!aiPlayersPlaying.get(AI))
+            return;
         HashMap<Integer, ArrayList<JLabel>> chipsLabels = getAIChipsLabels(AI, bet);
         aiPlayerBetValuePanel.get(AI).removeAll();
-        int[] fishValues = {100, 25, 10, 5};
-
+        int[] fishValues = { 100, 25, 10, 5 };
 
         for (int i = 0; i < fishValues.length; i++) {
             for (JLabel chipLabel : chipsLabels.get(fishValues[i])) {
@@ -419,24 +419,26 @@ public class GameView extends JPanel implements BlackJackPanelView{
         aiPlayerBetValuePanel.get(AI).repaint();
     }
 
-
     /**
      * Gets the AI chip labels for the bet
-     * @param AI The AI number
+     * 
+     * @param AI  The AI number
      * @param bet The bet value
      * @return The hashmap of chips
      */
     private HashMap<Integer, ArrayList<JLabel>> getAIChipsLabels(int AI, int bet) {
-        if (!aiPlayersPlaying.get(AI)) return null;
+        if (!aiPlayersPlaying.get(AI))
+            return null;
         aiPlayersChipsHashmap.add(new HashMap<Integer, ArrayList<JLabel>>());
-        int[] fishValues = {100, 25, 10, 5};
+        int[] fishValues = { 100, 25, 10, 5 };
         int remainingBet = bet;
 
         for (int i = 0; i < fishValues.length; i++) {
             int fishNumber = remainingBet / fishValues[i];
             ArrayList<JLabel> chipLabelList = new ArrayList<JLabel>();
             for (int j = 0; j < fishNumber; j++) {
-                JLabel fishLabel = new JLabel(new ImageIcon(getClass().getClassLoader().getResource("images/chips/chip-" + fishValues[i] + ".png")));
+                JLabel fishLabel = new JLabel(new ImageIcon(
+                        getClass().getClassLoader().getResource("images/chips/chip-" + fishValues[i] + ".png")));
                 chipLabelList.add(fishLabel);
             }
             aiPlayersChipsHashmap.get(AI).put(fishValues[i], chipLabelList);
@@ -455,11 +457,11 @@ public class GameView extends JPanel implements BlackJackPanelView{
         repaint();
     }
 
-
     // ----------------- ADD PLAYER -----------------
 
     /**
      * Checks if the AI is playing
+     * 
      * @param AI The AI number
      * @return True if the AI is playing
      */
@@ -469,6 +471,7 @@ public class GameView extends JPanel implements BlackJackPanelView{
 
     /**
      * Adds an AI player
+     * 
      * @param AI The AI number
      */
     public void addAIPlayer(int AI) {
@@ -480,6 +483,7 @@ public class GameView extends JPanel implements BlackJackPanelView{
 
     /**
      * Removes an AI player
+     * 
      * @param AI The AI number
      */
     public void removeAIPlayer(int AI) {
@@ -500,7 +504,8 @@ public class GameView extends JPanel implements BlackJackPanelView{
 
     /**
      * Updates AI score
-     * @param AI Number of AI to which change the score
+     * 
+     * @param AI    Number of AI to which change the score
      * @param score
      */
     public void updateAIScore(int AI, int score) {
@@ -516,31 +521,35 @@ public class GameView extends JPanel implements BlackJackPanelView{
 
     /**
      * Updates the AI result
-     * @param AI The AI number
+     * 
+     * @param AI     The AI number
      * @param result The result to display
      */
-    public void setAIResult(int AI, String result){
+    public void setAIResult(int AI, String result) {
         aiPlayerResultLabel.get(AI).setText(result);
     }
 
     /**
      * Updates the human player's result display
+     * 
      * @param result The result to display
      */
     public void setPlayerResult(String result) {
         humanPlayerResultLabel.setText(result);
     }
 
-   // ----------------- CARDS -----------------
+    // ----------------- CARDS -----------------
 
     /**
      * Gets the sprite from te card name
+     * 
      * @param cardName formatted as: "rank_suit"
      * @return
      */
     public ImageIcon getCardImage(String cardName) {
         cardName = cardName.toLowerCase();
-        ImageIcon cardImage = new ImageIcon(getClass().getClassLoader().getResource("images/cards/" + cardName + ".png"));
+        ImageIcon cardImage = new ImageIcon(
+                getClass().getClassLoader().getResource("images/cards/" + cardName + ".png"));
 
         return cardImage;
     }
@@ -561,10 +570,10 @@ public class GameView extends JPanel implements BlackJackPanelView{
      * Clears the dealer's cards
      */
     public void clearDealerCards() {
-        //Get the components in the panel
+        // Get the components in the panel
         Component[] componentList = dealerCardsPanel.getComponents();
 
-        for(Component c : componentList){
+        for (Component c : componentList) {
             dealerScoreLabel.setText("");
             dealerCardsPanel.remove(c);
         }
@@ -575,11 +584,13 @@ public class GameView extends JPanel implements BlackJackPanelView{
 
     /**
      * Adds a card to the AI's panel
-     * @param AI The AI number
+     * 
+     * @param AI       The AI number
      * @param cardName The card name
      */
     public void addAICard(int AI, String cardName) {
-        if (!aiPlayersPlaying.get(AI)) return;
+        if (!aiPlayersPlaying.get(AI))
+            return;
 
         JLabel cardLabel = new JLabel(getCardImage(cardName));
         cardLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -591,15 +602,17 @@ public class GameView extends JPanel implements BlackJackPanelView{
 
     /**
      * Clears the AI's cards
+     * 
      * @param AI The AI number
      */
     public void clearAICards(int AI) {
-        if (!aiPlayersPlaying.get(AI)) return;
+        if (!aiPlayersPlaying.get(AI))
+            return;
 
-        //Get the components in the panel
+        // Get the components in the panel
         Component[] componentList = aiPlayerCardsPanel.get(AI).getComponents();
 
-        for(Component c : componentList){
+        for (Component c : componentList) {
             aiPlayerScoreLabel.get(AI).setText("");
             aiPlayerCardsPanel.get(AI).remove(c);
             aiPlayerResultLabel.get(AI).setText("");
@@ -625,10 +638,10 @@ public class GameView extends JPanel implements BlackJackPanelView{
      * Clears the player's cards
      */
     public void clearPlayerCards() {
-        //Get the components in the panel
+        // Get the components in the panel
         Component[] componentList = humanPlayerCardsPanel.getComponents();
 
-        for(Component c : componentList){
+        for (Component c : componentList) {
             humanPlayerScoreLabel.setText("");
             humanPlayerCardsPanel.remove(c);
         }
@@ -639,11 +652,11 @@ public class GameView extends JPanel implements BlackJackPanelView{
         humanPlayerCardsPanel.repaint();
     }
 
-
     // ---------------- Bets/Balance ----------------
 
     /**
      * Sets the bet value of the human player
+     * 
      * @param newBetValue The new bet value
      */
     public void setBetValue(int newBetValue) {
@@ -652,11 +665,14 @@ public class GameView extends JPanel implements BlackJackPanelView{
 
     /**
      * Gets the bet value of the human player
+     * 
      * @return The bet value
      */
     public int getBetValue() {
+        if (chipsHashmap == null)
+            return 0;
         int betValue = 0;
-        int[] fishValues = {100, 25, 10, 5};
+        int[] fishValues = { 100, 25, 10, 5 };
         for (int i = 0; i < fishValues.length; i++) {
             betValue += chipsHashmap.get(fishValues[i]).size() * fishValues[i];
 
@@ -667,7 +683,8 @@ public class GameView extends JPanel implements BlackJackPanelView{
 
     /**
      * Gets the bet value of the AI player
-     * @param AI The AI number
+     * 
+     * @param AI          The AI number
      * @param newBetValue The new bet value
      */
     public void setAIBetValue(int AI, int newBetValue) {
@@ -676,6 +693,7 @@ public class GameView extends JPanel implements BlackJackPanelView{
 
     /**
      * Sets the balance value of the human player
+     * 
      * @param newBalanceValue The new balance value
      */
     public void setBalanceValue(int newBalanceValue) {
@@ -684,28 +702,30 @@ public class GameView extends JPanel implements BlackJackPanelView{
 
     /**
      * Sets the balance value of the AI player
-     * @param AI The AI number
+     * 
+     * @param AI              The AI number
      * @param newBalanceValue The new balance value
      */
     public void setAIBalanceValue(int AI, int newBalanceValue) {
-        if (!aiPlayersPlaying.get(AI)) return;
+        if (!aiPlayersPlaying.get(AI))
+            return;
         aiPlayerBalanceLabel.get(AI).setText("Balance: " + newBalanceValue);
     }
 
-
     /**
      * Switches the buttons panel
+     * 
      * @param panel The panel to switch to
      */
     public void setButtonsPanel(int panel) {
         buttonsCardLayout.show(buttonPanel, Integer.toString(panel));
     }
 
-
     // ---------------- Action listeners ----------------
 
     /**
      * Sets the action listener for the First Add AI Player button
+     * 
      * @param listener The action listener
      */
     public void setAddFirstAIPlayerButtonListener(ActionListener listener) {
@@ -714,6 +734,7 @@ public class GameView extends JPanel implements BlackJackPanelView{
 
     /**
      * Sets the action listener for the Second Add AI Player button
+     * 
      * @param listener The action listener
      */
     public void setAddSecondAIPlayerButtonListener(ActionListener listener) {
@@ -722,6 +743,7 @@ public class GameView extends JPanel implements BlackJackPanelView{
 
     /**
      * Sets the action listener for the Third Add AI Player button
+     * 
      * @param listener The action listener
      */
     public void setAddThirdAIPlayerButtonListener(ActionListener listener) {
@@ -730,6 +752,7 @@ public class GameView extends JPanel implements BlackJackPanelView{
 
     /**
      * Sets the action listener for the First Remove AI Player button
+     * 
      * @param listener The action listener
      */
     public void setRemoveFirstAIPlayerButtonListener(ActionListener listener) {
@@ -738,6 +761,7 @@ public class GameView extends JPanel implements BlackJackPanelView{
 
     /**
      * Sets the action listener for the Second Remove AI Player button
+     * 
      * @param listener The action listener
      */
     public void setRemoveSecondAIPlayerButtonListener(ActionListener listener) {
@@ -746,6 +770,7 @@ public class GameView extends JPanel implements BlackJackPanelView{
 
     /**
      * Sets the action listener for the Third Remove AI Player button
+     * 
      * @param listener The action listener
      */
     public void setRemoveThirdAIPlayerButtonListener(ActionListener listener) {
@@ -754,6 +779,7 @@ public class GameView extends JPanel implements BlackJackPanelView{
 
     /**
      * Sets the action listener for the -100 button
+     * 
      * @param listener The mouse listener
      */
     public void setSub100Listener(MouseListener listener) {
@@ -764,6 +790,7 @@ public class GameView extends JPanel implements BlackJackPanelView{
 
     /**
      * Sets the action listener for the -25 button
+     * 
      * @param listener The mouse listener
      */
     public void setSub25Listener(MouseListener listener) {
@@ -774,6 +801,7 @@ public class GameView extends JPanel implements BlackJackPanelView{
 
     /**
      * Sets the action listener for the -10 button
+     * 
      * @param listener The mouse listener
      */
     public void setSub10Listener(MouseListener listener) {
@@ -784,6 +812,7 @@ public class GameView extends JPanel implements BlackJackPanelView{
 
     /**
      * Sets the action listener for the -5 button
+     * 
      * @param listener The mouse listener
      */
     public void setSub5Listener(MouseListener listener) {

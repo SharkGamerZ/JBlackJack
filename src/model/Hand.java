@@ -18,10 +18,11 @@ public class Hand {
 
     /**
      * Add a card to the hand
+     * 
      * @param card The card to add to the hand
      */
-    public void addCard(Card card) {
-        cards.add(card);
+    public void addCard(Card newCard) {
+        cards.add(newCard);
     }
 
     /**
@@ -33,6 +34,7 @@ public class Hand {
 
     /**
      * Gets the current hand's cards.
+     * 
      * @return ArrayList of cards
      */
     public ArrayList<Card> getCards() {
@@ -41,6 +43,7 @@ public class Hand {
 
     /**
      * Calculate the current score of the hand.
+     * 
      * @return Score of the hand
      */
     public int calculateScore() {
@@ -67,6 +70,7 @@ public class Hand {
 
     /**
      * Gets the visible card of the dealer
+     * 
      * @return The visible card of the dealer
      */
     public Card getVisibleCard() {
