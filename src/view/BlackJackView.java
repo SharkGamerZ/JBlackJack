@@ -4,16 +4,23 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Observable;
+import java.util.Observer;
 
 /**
  * The main view for the BlackJack game.
  *
  */
-public class BlackJackView extends JFrame {
+public class BlackJackView extends JFrame implements Observer {
     private CardLayout cardLayout;
     private JPanel mainPanel;
     private Map<String, JPanel> views;
 
+    private String currentView;
+    /**
+     * The constructor
+     * @param title Title of the new view
+     */
     public BlackJackView(String title) {
         super(title);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -52,6 +59,8 @@ public class BlackJackView extends JFrame {
             views.get(viewName).revalidate();
             views.get(viewName).repaint();
             views.get(viewName).updateUI();
+
+            currentView = viewName;
         } else {
             System.err.println("View not found: " + viewName);
         }
@@ -75,5 +84,20 @@ public class BlackJackView extends JFrame {
     public void start(String initialView) {
         setVisible(true);
         showView(initialView);
+        currentView = initialView;
+    }
+
+
+    /**
+     * Updates the view based on the model
+     * @param o The observable object
+     * @param arg The argument passed
+     */
+    @Override
+    public void update(Observable o, Object arg) {
+        // This will be called when the model changes
+        views.get(currentView).revalidate();
+        views.get(currentView).repaint();
+        views.get(currentView).updateUI();
     }
 }

@@ -7,7 +7,14 @@ package main;
 import controller.BlackJackController;
 import model.Game;
 
+/**
+ * The main class
+ */
 public class JBlackJack {
+    /**
+     * Main method to start the Game
+     * @param args
+     */
     public static void main(String[] args) {
         // Create model
         Game model = new Game();

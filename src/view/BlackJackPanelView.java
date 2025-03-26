@@ -1,5 +1,8 @@
 package view;
 
+/**
+ * Interface to manage all the applications' panels
+ */
 public interface BlackJackPanelView {
     /**
      * Get the name identifier for this view

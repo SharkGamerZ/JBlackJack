@@ -1,8 +1,7 @@
 package model;
 
 /**
- * Rappresenta una carta da gioco nel BlackJack.
- * Fa parte del modello (Model) e contiene le proprietà della carta.
+ * Represents a Card
  */
 public class Card {
     private Suit suit;

@@ -1,14 +1,13 @@
 package model;
 
-/**
- * Rappresenta un mazzo di carte per il gioco del BlackJack.
- * Gestisce la collezione di carte e le operazioni di mescolamento.
- */
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Represents the Deck used in the game.
+ */
 public class Deck {
     private List<Card> cards;
     private Random random;

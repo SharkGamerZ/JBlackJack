@@ -1,7 +1,5 @@
 package model;
 
-import model.*;
-
 public class GameEvent {
     private String type;
     private Card card;

@@ -16,18 +16,33 @@ public class Hand {
         cards = new ArrayList<>();
     }
 
+    /**
+     * Add a card to the hand
+     * @param card The card to add to the hand
+     */
     public void addCard(Card card) {
         cards.add(card);
     }
 
+    /**
+     * Clears the hand from the cards
+     */
     public void clear() {
         cards.clear();
     }
 
+    /**
+     * Gets the current hand's cards.
+     * @return ArrayList of cards
+     */
     public ArrayList<Card> getCards() {
         return cards;
     }
 
+    /**
+     * Calculate the current score of the hand.
+     * @return Score of the hand
+     */
     public int calculateScore() {
         int score = 0;
         int aceCount = 0;
@@ -50,6 +65,10 @@ public class Hand {
         return score;
     }
 
+    /**
+     * Gets the visible card of the dealer
+     * @return The visible card of the dealer
+     */
     public Card getVisibleCard() {
         if (cards.size() > 1) {
             return cards.get(1);

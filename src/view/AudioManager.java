@@ -4,6 +4,9 @@
  */
 package view;
 
+/**
+ * Class to use the audio
+ */
 public class AudioManager {
     /**
      * Costruttore per AudioManager.

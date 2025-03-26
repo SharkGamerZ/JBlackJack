@@ -4,31 +4,44 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
+/**
+ * Represents the menu view
+ */
 public class MenuView extends JPanel implements BlackJackPanelView {
     private JLabel titleLabel;
     private JButton newGameButton;
-    private JButton optionsButton;
+    private JButton profileButton;
     private JButton exitButton;
 
+    /**
+     * Constructor for the menu view
+     */
     public MenuView() {
         initialize();
     }
 
+    /**
+     * Get the view name
+     * @return the view name
+     */
     @Override
     public String getViewName() {
         return "MENU";
     }
 
+    /**
+     * Initialize the menu view
+     */
     @Override
     public void initialize() {
         titleLabel = new JLabel();
-        optionsButton = new JButton();
+        profileButton = new JButton();
         newGameButton = new JButton();
         exitButton = new JButton();
 
 
         //---- optionsButton ----
-        optionsButton.setText("Opzioni");
+        profileButton.setText("Profilo");
 
         //---- newGameButton ----
         newGameButton.setText("Nuova Partita");
@@ -41,37 +54,20 @@ public class MenuView extends JPanel implements BlackJackPanelView {
         titleLabel.setFont(new Font("Source Code Pro Black", Font.PLAIN, 48));
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-        GroupLayout layout = new GroupLayout(this);
-        setLayout(layout);
-        layout.setHorizontalGroup(
-                layout.createParallelGroup()
-                        .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addContainerGap(320, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup()
-                                        .addComponent(newGameButton, GroupLayout.PREFERRED_SIZE, 160, GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(optionsButton, GroupLayout.PREFERRED_SIZE, 160, GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(exitButton, GroupLayout.PREFERRED_SIZE, 160, GroupLayout.PREFERRED_SIZE))
-                                .addGap(320, 320, 320))
-                        .addGroup(layout.createSequentialGroup()
-                                .addGap(220, 220, 220)
-                                .addComponent(titleLabel, GroupLayout.PREFERRED_SIZE, 360, GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(220, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-                layout.createParallelGroup()
-                        .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGap(77, 77, 77)
-                                .addComponent(titleLabel, GroupLayout.PREFERRED_SIZE, 120, GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
-                                .addComponent(newGameButton, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)
-                                .addGap(40, 40, 40)
-                                .addComponent(optionsButton, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)
-                                .addGap(40, 40, 40)
-                                .addComponent(exitButton, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)
-                                .addGap(90, 90, 90))
-        );
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        add(titleLabel);
+        newGameButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        add(newGameButton);
+        profileButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        add(profileButton);
+        exitButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        add(exitButton);
     }
 
+    /**
+     * Update the menu view
+     */
     @Override
     public void updateView() {
         // Nothing to update in menu view
@@ -84,8 +80,11 @@ public class MenuView extends JPanel implements BlackJackPanelView {
         newGameButton.addActionListener(listener);
     }
 
-    public void setOptionsButtonListener(ActionListener listener) {
-        optionsButton.addActionListener(listener);
+    /**
+     * Set action listener for the profile button
+     */
+    public void setProfileButtonListener(ActionListener listener) {
+        profileButton.addActionListener(listener);
     }
 
     /**
